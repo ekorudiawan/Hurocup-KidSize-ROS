@@ -1,0 +1,1 @@
+docker run -it --rm -v D:/Source-Code/Robotics-Projects/Hurocup-KidSize-ROS/catkin_ws:/home/tinker/catkin_ws -e DISPLAY=10.0.75.1:0.0 ekorudiawan/armv7-ros-kinetic

@@ -1,0 +1,1 @@
+docker build -t ekorudiawan/armv7-ros-kinetic .
