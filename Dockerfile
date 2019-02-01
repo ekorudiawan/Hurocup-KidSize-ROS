@@ -72,22 +72,15 @@ RUN apt-get update && apt-get install libstdc++6
 RUN apt-get update && apt-get install -y software-properties-common
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test && apt-get update && apt-get upgrade -y
 RUN apt-get update && apt-get install -y gcc-4.9 && apt-get upgrade -y libstdc++6
-# RUN apt-get update && apt-get install -y python-qrtools libzbar-dev
-# RUN pip install pyzbar
-# RUN pip uninstall -y pyOpenSSL
-# RUN pip install pyOpenSSL==17.3.0
-# RUN pip install -U pyOpenSSL
-# RUN pip install pyzbar
 
-# RUN python -m pip install numpy matplotlib ipython jupyter tqdm keras
-    
-# RUN pip install -U scipy && \
-#     pip install -U numpy && \
-#     pip install -U matplotlib && \
-#     pip install -U tqdm && \
-#     pip install -U keras && \
-#     pip install -U scikit-learn
-    
+# Install RVIZ
+RUN apt-get update && apt-get install -y \
+    ros-kinetic-rviz \
+    ros-kinetic-rqt \
+    ros-kinetic-rqt-common-plugins
+
+# RUN rosdep update && rosdep install -y rqt_plot
+
 # setup entrypoint
 COPY ./ros_entrypoint.sh /
 
