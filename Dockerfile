@@ -79,7 +79,10 @@ RUN apt-get update && apt-get install -y \
     ros-kinetic-rqt \
     ros-kinetic-rqt-common-plugins
 
-# RUN rosdep update && rosdep install -y rqt_plot
+# Install ZBar
+RUN apt-get update && apt-get install -y \
+    python-qrtools \
+    libzbar-dev 
 
 # setup entrypoint
 COPY ./ros_entrypoint.sh /
