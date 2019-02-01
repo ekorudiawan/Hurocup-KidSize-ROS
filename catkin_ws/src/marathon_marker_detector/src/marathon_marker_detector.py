@@ -34,7 +34,7 @@ def main():
     marker_img_sub = rospy.Subscriber("/usb_cam/image_raw", Image, img_sub_callback)
     marker_img_pub = rospy.Publisher("/marathon/marker/image", Image, queue_size=100)
     marker_str_pub = rospy.Publisher("/marathon/marker/result", String, queue_size=100)
-    rate = rospy.Rate(1000)
+    rate = rospy.Rate(100)
 
     json_file = open('model.json', 'r')
     loaded_model_json = json_file.read()
@@ -47,8 +47,8 @@ def main():
     # marker_iter = 0
     while not rospy.is_shutdown():
         global rgb_img
-        image_file = "/home/tinker/catkin_ws/dataset/marathon/line_images/image"+str(image_iter)+".png"
-        rgb_img = cv.imread(image_file)
+        # image_file = "/home/tinker/catkin_ws/dataset/marathon/line_images/image"+str(image_iter)+".png"
+        # rgb_img = cv.imread(image_file)
         result_img = rgb_img.copy()
         input_img = cv.cvtColor(rgb_img, cv.COLOR_BGR2GRAY)
         input_img = cv.resize(input_img, img_size)

@@ -67,8 +67,8 @@ def main():
 
     while not rospy.is_shutdown():
         global rgb_img
-        image_file = "/home/tinker/catkin_ws/dataset/marathon/line_images/image"+str(image_iter)+".png"
-        rgb_img = cv.imread(image_file)
+        # image_file = "/home/tinker/catkin_ws/dataset/marathon/line_images/image"+str(image_iter)+".png"
+        # rgb_img = cv.imread(image_file)
         result_img = rgb_img.copy()
         img_h, img_w, _ = rgb_img.shape
         red_h_min = cv.getTrackbarPos("H_min", "Control")
