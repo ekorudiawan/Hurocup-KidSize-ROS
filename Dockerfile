@@ -84,6 +84,9 @@ RUN apt-get update && apt-get install -y \
     python-qrtools \
     libzbar-dev 
 
+RUN apt-get update && apt-get install -y \
+    dos2unix
+
 # setup entrypoint
 COPY ./ros_entrypoint.sh /
 
