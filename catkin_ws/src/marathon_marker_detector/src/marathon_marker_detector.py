@@ -37,24 +37,24 @@ def main():
     #global marker_img_pub, marker_str_pub
     marker_img_pub = rospy.Publisher("/marathon/marker/image", Image, queue_size=1)
     marker_str_pub = rospy.Publisher("/marathon/marker/result", String, queue_size=1)
-    json_file = open('model.json', 'r')
+    json_file = open('/home/barelangfc/catkin_ws/src/marathon_marker_detector/src/model.json', 'r')
     loaded_model_json = json_file.read()
     json_file.close()
     #global loaded_model
     loaded_model = model_from_json(loaded_model_json)
-    loaded_model.load_weights("model.h5")
+    loaded_model.load_weights("/home/barelangfc/catkin_ws/src/marathon_marker_detector/src/model.h5")
     rospy.loginfo("Loaded model from disk successfull")
     rate = rospy.Rate(10)
     while not rospy.is_shutdown():
-	global rgb_img
+        global rgb_img
         result_img = rgb_img.copy()
         input_img = cv.cvtColor(rgb_img, cv.COLOR_BGR2GRAY)
         input_img = cv.resize(input_img, img_size)
         input_img = np.array(input_img).reshape(1, img_w, img_h, n_chn)
-	#global loaded_model
+        #global loaded_model
         pred_output = loaded_model.predict(input_img)
-	rospy.loginfo(pred_output.reshape(3))
-	index = np.argmax(pred_output[0])
+        rospy.loginfo(pred_output.reshape(3))
+        index = np.argmax(pred_output[0])
         font = cv.FONT_HERSHEY_SIMPLEX
         red_color = (0, 0, 255)
         text_pos = (20, 60)
@@ -74,9 +74,8 @@ def main():
 
         marker_img_pub.publish(bridge.cv2_to_imgmsg(result_img, "bgr8"))
         marker_str_pub.publish(str_result)
-	rate.sleep()
+        rate.sleep()
     rospy.loginfo("Marathon Marker Detector - Shut Down")
 
-
 if __name__ == "__main__":
-	main()
+    main()

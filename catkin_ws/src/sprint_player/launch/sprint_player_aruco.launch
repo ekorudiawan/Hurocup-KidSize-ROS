@@ -1,0 +1,16 @@
+<launch>
+    <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" >
+	<param name="pixel_format" value="yuyv"/>
+	<param name="image_width" value="640" />
+	<param name="image_height" value="480" />
+	<param name="framerate" value="30" />
+	<param name="autofocus" value="false" />
+    </node>
+    <node name="sprint_params" pkg="dynamic_params" type="sprint_server.py" />
+    <node name="dynamic_reconfigure_load" pkg="dynamic_reconfigure" type="dynparam" args="load /sprint_params /home/barelangfc/catkin_ws/dataset/sprint_param.yaml" />
+    <!-- <node name="compass_sensor" pkg="compass_sensor" type="compass_sensor.py" /> -->
+    <node name="darwin_motion_bridge" pkg="darwin_motion_bridge" type="darwin_motion_bridge.py" />
+    <node name="sprint_aruco_detector" pkg="sprint_aruco_detector" type="sprint_aruco_detector.py"/>
+    <node name="sprint_player" pkg="sprint_player" type="sprint_player.py" output="screen"/>
+</launch>
+
