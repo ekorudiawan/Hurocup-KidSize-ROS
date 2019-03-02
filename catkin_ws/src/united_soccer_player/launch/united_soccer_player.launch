@@ -1,0 +1,17 @@
+<launch>
+    <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" >
+	<param name="pixel_format" value="yuyv"/>
+	<param name="image_width" value="640" />
+	<param name="image_height" value="480" />
+	<param name="framerate" value="30" />
+	<param name="autofocus" value="false" />
+    </node>
+    <node name="united_soccer_params" pkg="dynamic_params" type="united_soccer_server.py" />
+    <node name="united_soccer_vision_params" pkg="dynamic_params" type="united_soccer_vision_server.py" />
+    <node name="dynamic_reconf_load" pkg="dynamic_reconfigure" type="dynparam" args="load /united_soccer_params /home/barelangfc/catkin_ws/dataset/united_soccer_param.yaml" />
+    <node name="dynamic_reconf_load_vision" pkg="dynamic_reconfigure" type="dynparam" args="load /united_soccer_vision_params /home/barelangfc/catkin_ws/dataset/united_soccer_vision_param.yaml" />
+    <node name="compass_sensor" pkg="compass_sensor" type="compass_sensor.py" />
+    <node name="darwin_motion_bridge" pkg="darwin_motion_bridge" type="darwin_motion_bridge.py" />
+    <node name="united_soccer_ball_detector" pkg="united_soccer_ball_detector" type="united_soccer_ball_detector.py" output="screen"/>
+    <node name="united_soccer_player" pkg="united_soccer_player" type="united_soccer_player.py" output="screen"/>
+</launch>

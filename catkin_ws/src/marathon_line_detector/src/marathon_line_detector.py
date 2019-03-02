@@ -32,7 +32,7 @@ def kill_node():
 def main():
     rospy.loginfo("Marathon Line Detector - Running")
     rospy.init_node("marathon_line_detector")
-    # time.sleep(.5)
+    time.sleep(.5)
     global line_angle_pub, line_pos_pub, line_bin_img_pub, line_rslt_img_pub
     line_image_sub = rospy.Subscriber("/usb_cam/image_raw/", Image, image_callback)
     line_angle_pub = rospy.Publisher("/marathon/line/angle", Float32, queue_size=1)

@@ -3,7 +3,7 @@ import rospy
 import os
 from dynamic_reconfigure.server import Server
 import dynamic_reconfigure
-from dynamic_params.cfg import MarathonReconfConfig
+from dynamic_params.cfg import MarathonMarkerReconfConfig
 
 def callback(config, level):
     # rospy.loginfo("""Reconfigure Request: {H_Max}, {H_Min},
@@ -14,7 +14,7 @@ def callback(config, level):
     
 
 if __name__ == "__main__":
-    rospy.init_node("marathon_params")
-    srv = Server(MarathonReconfConfig, callback)
+    rospy.init_node("marathon_marker_params")
+    srv = Server(MarathonMarkerReconfConfig, callback)
     # os.system("rosrun dynamic_reconfigure dynparam load /marathon_params ~/catkin_ws/dataset/marathon_param.yaml")
     rospy.spin()

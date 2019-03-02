@@ -3,7 +3,8 @@ import rospy
 import os
 from dynamic_reconfigure.server import Server
 import dynamic_reconfigure
-from dynamic_params.cfg import MarathonReconfConfig
+from dynamic_params.cfg import UnitedSoccerReconfConfig
+
 
 def callback(config, level):
     # rospy.loginfo("""Reconfigure Request: {H_Max}, {H_Min},
@@ -14,7 +15,7 @@ def callback(config, level):
     
 
 if __name__ == "__main__":
-    rospy.init_node("marathon_params")
-    srv = Server(MarathonReconfConfig, callback)
-    # os.system("rosrun dynamic_reconfigure dynparam load /marathon_params ~/catkin_ws/dataset/marathon_param.yaml")
+    rospy.init_node("united_soccer_params")
+    srv = Server(UnitedSoccerReconfConfig, callback)
+    # os.system("rosrun dynamic_reconfigure dynparam load /united_soccer_params ~/catkin_ws/dataset/united_soccer_param.yaml")
     rospy.spin()

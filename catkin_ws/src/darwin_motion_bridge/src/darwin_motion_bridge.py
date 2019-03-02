@@ -82,8 +82,8 @@ def kill_node():
 	rospy.signal_shutdown("shutdown time.") 
 
 def main():
-	# os.system(kill)
-	# os.system(cmd)
+	os.system(kill)
+	os.system(cmd)
 	
 	global sock_motion, sock_button
 	sock_motion = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

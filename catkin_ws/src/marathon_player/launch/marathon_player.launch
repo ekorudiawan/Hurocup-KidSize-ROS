@@ -6,11 +6,13 @@
 	<param name="framerate" value="60" />
 	<param name="autofocus" value="false" />
     </node>
-    <!-- <node name="marathon_params" pkg="dynamic_params" type="marathon_server.py" /> -->
-    <!-- <node name="dynamic_reconfigure_load" pkg="dynamic_reconfigure" type="dynparam" args="load /marathon_params /home/barelangfc/catkin_ws/dataset/marathon_param.yaml" /> -->
-    <rosparam command="load" file="/home/barelangfc/dump.yaml" /> 
+    <node name="marathon_params" pkg="dynamic_params" type="marathon_server.py" />
+    <node name="marathon_marker_params" pkg="dynamic_params" type="marathon_marker_server.py" />
+    <node name="dynamic_reconfigure_load" pkg="dynamic_reconfigure" type="dynparam" args="load /marathon_params /home/barelangfc/catkin_ws/dataset/marathon_param.yaml" />
+    <node name="dynamic_reconf_marker_load" pkg="dynamic_reconfigure" type="dynparam" args="load /marathon_marker_params /home/barelangfc/catkin_ws/dataset/marathon_marker_param.yaml" />
+    <!-- <rosparam command="load" file="/home/barelangfc/dump.yaml" />  -->
     <node name="darwin_motion_bridge" pkg="darwin_motion_bridge" type="darwin_motion_bridge.py" />
     <node name="marathon_line_detector" pkg="marathon_line_detector" type="marathon_line_detector.py" />
-    <node name="marathon_marker_detector" pkg="marathon_marker_detector" type="marathon_marker_detector.py" />
+    <node name="marathon_marker_detector_with_color" pkg="marathon_marker_detector_with_color" type="marathon_marker_detector_with_color.py" output="screen"/>  
     <node name="marathon_player" pkg="marathon_player" type="marathon_player.py" output="screen"/>
 </launch>

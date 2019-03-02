@@ -193,14 +193,14 @@ def head_track_line():
         pos_tilt = rospy.get_param("/marathon_params/Tilt_Angle")
 
         head_pos = head_limit(pos_pan, round(pos_tilt, 2))
-        rospy.loginfo("Marker : %s Line Centre : %d,%d Line Angle: %d", marker, line_centre_x, line_centre_y, line_angle)
+        # rospy.loginfo("Marker : %s Line Centre : %d,%d Line Angle: %d", marker, line_centre_x, line_centre_y, line_angle)
         pos_pan, pos_tilt = head_pos.data
         head_pub.publish(head_pos)
 
-def body_track_line(mode):
+def body_track_line():
     global pos_pan, pos_tilt
     KP_body = rospy.get_param("/marathon_params/Body_KP")
-    if line_angle != -888:   
+    if line_centre_x != -1:   
         error_body_a = pos_pan - 0
     else:
         error_body_a = 0
@@ -278,38 +278,40 @@ def main():
                     # rospy.loginfo(pos_tilt)
                     if button[1] == 1:
                         motion_state_pub.publish("start")
-                        if conf_start > 60:
-                            conf_start = 0
-                            state = "forward"
-                        else:
-                            conf_start += 1 
+                        state = "follow_line"
                             
-            elif state == "follow_line":    
-                head_track_line()
-                # PID body
-                if marker == "straight":
-                    count_straight += 1
-                else:
-                    count_straight = 0
-                if count_straight > marker_threshold:
-                    count_straight = 0
-                    state = "go_ahead"
+            elif state == "follow_line":   
+                if line_lost(20):
+                    scan_line(3)
+                    walk(0.04, 0.0, 0.00)
+                else: 
+                    head_track_line()
+                    shift = body_track_line()
+                    walk(0.04, 0.0, shift)
+                # # PID body
+                # if marker == "straight":
+                #     count_straight += 1
+                # else:
+                #     count_straight = 0
+                # if count_straight > marker_threshold:
+                #     count_straight = 0
+                #     state = "go_ahead"
 
-                if marker == "right":
-                    count_right += 1
-                else:
-                    count_right = 0
-                if count_right > marker_threshold:
-                    count_right = 0
-                    state = "turn_right"
+                # if marker == "right":
+                #     count_right += 1
+                # else:
+                #     count_right = 0
+                # if count_right > marker_threshold:
+                #     count_right = 0
+                #     state = "turn_right"
 
-                if marker == "left":
-                    count_left += 1
-                else:
-                    count_left = 0
-                if count_left > marker_threshold:
-                    count_left = 0
-                    state = "turn_left"
+                # if marker == "left":
+                #     count_left += 1
+                # else:
+                #     count_left = 0
+                # if count_left > marker_threshold:
+                #     count_left = 0
+                #     state = "turn_left"
 
             elif state == "go_ahead":
                 # wait until line found

@@ -6,9 +6,9 @@ import dynamic_reconfigure
 from dynamic_params.cfg import SprintReconfConfig
 
 def callback(config, level):
-    rospy.loginfo("""Reconfigure Request: {Pan_KP}, {Pan_KI},
-          {Pan_KD}, {Pan_Step}, {Tilt_KP}, {Tilt_KI},
-          {Tilt_KD}, {Tilt_Step}, {Scan_Rate}, {Body_Forward_KP}, {Body_Backward_KP}""".format(**config))
+    # rospy.loginfo("""Reconfigure Request: {Pan_KP}, {Pan_KI},
+    #       {Pan_KD}, {Pan_Step}, {Tilt_KP}, {Tilt_KI},
+    #       {Tilt_KD}, {Tilt_Step}, {Scan_Rate}, {Body_Forward_KP}, {Body_Backward_KP}""".format(**config))
     return config
 
 if __name__ == "__main__":

@@ -68,7 +68,7 @@ pos_tilt = 0.0
 pan_min = -1.5
 pan_max = 1.5
 tilt_min = -1.5
-tilt_max = 0.0
+tilt_max = -0.8
 
 def head_limit(pos_pan, pos_tilt):
 	if pos_pan <= pan_min :		
@@ -173,7 +173,7 @@ def head_track_marker():
 		pos_tilt += (P_tilt + I_tilt + D_tilt)
 
 		head_pos = head_limit(pos_pan, round(pos_tilt, 2))
-		rospy.loginfo("Marker Size: %d", marker_size)
+		print("Marker Size: %d", marker_size)
 		pos_pan, pos_tilt = head_pos.data		
 		head_pub.publish(head_pos)
 
@@ -205,7 +205,7 @@ def kill_node():
 	rospy.signal_shutdown("shutdown time.") 
 
 def main():
-	rospy.loginfo("Sprint Player - Running")
+	print("Sprint Player - Running")
 	rospy.init_node("sprint_player")
 	rospy.wait_for_service("/srv_controller")
 	
@@ -218,7 +218,7 @@ def main():
 	button_sub = rospy.Subscriber("/button/state", Int32MultiArray, button_callback)
 	# compass_sub = rospy.Subscriber("/compass/value", Int32, compass_callback)
 
-	rospy.loginfo("Sprint Player - Running")
+	print("Sprint Player - Running")
 	time.sleep(0.3)
 	motion_state_pub.publish("stand")
 	global freq
@@ -236,11 +236,11 @@ def main():
 			if button_pressed[0] == 1:
 				if play:
 					motion_state_pub.publish("sit")
-					rospy.loginfo("Sit")
+					print("Sit")
 					play = False
 				else:
 					motion_state_pub.publish("stand")
-					rospy.loginfo("Stand")
+					print("Stand")
 					play = True
 					state = "initial"
 				button_pressed[0] = 0
@@ -249,7 +249,7 @@ def main():
 		#//////////////.............Role of execution............///////////////
 		#///////////////////////////////////////////////////////////////////////
 		if play :
-			rospy.loginfo(state)
+			print(state)
 			if state == "initial":
 				if marker_lost(20):
 					# scan_marker(1)
@@ -258,20 +258,22 @@ def main():
 					head_track_marker()
 					if button[1] == 1:
 						motion_state_pub.publish("start")
-						if conf_start > 60:
-							conf_start = 0
-							state = "forward"
-						else:
-					 		conf_start += 1						
+						state = "walk_warmup"
+			elif state == "walk_warmup":				 
+				if conf_start > 30:
+					conf_start = 0
+					state = "forward"
+				else:
+					conf_start += 1	
 			elif state == "forward":
 				if marker_lost(20):
 					scan_marker(1)
-					walk(0.08, 0.0, 0.00	)
+					walk(0.06, 0.0, 0.00)
 				else:
-					if marker_size < 35000:
+					if marker_size < 45000:
 						head_track_marker()
 						shift = body_track_marker(0)
-						walk(0.08, 0.0, shift)
+						walk(0.06, 0.0, shift)
 					else:
 						state = "backward"
 			elif state == "backward":
@@ -280,13 +282,13 @@ def main():
 					walk(-0.04, 0.0, 0.0)
 				else:
 					head_track_marker()
-					if marker_size > 500:						
+					if marker_size > 100:						
 						shift = body_track_marker(1)
 						walk(-0.04, 0.0, shift)
 						conf_stop = 0
 					else:
 						if conf_stop > 30:
-							rospy.loginfo("stop")
+							print("stop")
 							motion_state_pub.publish("stop")
 							state = "initial"
 						else:
@@ -297,7 +299,7 @@ def main():
 					scan_marker(1)
 				else:
 					head_track_marker()
-				rospy.loginfo("%d, %d", marker_x, marker_y)
+				print("%d, %d", marker_x, marker_y)
 			
 			elif state == "tune_body":
 				if marker_lost(20):
@@ -307,10 +309,10 @@ def main():
 					head_track_marker()
 					shift = body_track_marker()
 					walk(0.0, 0.0, shift)
-				rospy.loginfo("%d, %d", marker_x, marker_y)
+				print("%d, %d", marker_x, marker_y)
 		
 		rate.sleep()
-	rospy.loginfo("Sprint Player - Shut Down")
+	print("Sprint Player - Shut Down")
 	rospy.on_shutdown(kill_node)
 
 if __name__ == "__main__":
